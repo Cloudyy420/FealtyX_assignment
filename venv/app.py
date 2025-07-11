@@ -46,5 +46,12 @@ def delete_student(id_request):
             return ("Student was deleted successfully")
         
     return {"Error": "Student id was not found"}
+
+''' basic crud is complete.
+TODO: intigrate ollama, error handling, input validation, concurrency.
+ 
+'''
+
 if __name__ == '__main__':
     app.run(debug=True)
+    
