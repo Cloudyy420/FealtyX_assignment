@@ -1,9 +1,11 @@
 from flask import Flask , request , jsonify
 import requests
+import threading
 
 app = Flask(__name__)
 
 students = [{"id":1, "name":"John", "age":20, "email":"john@gmail.com"}]
+students_lock = threading.Lock()
 
 # Ollama API configuration
 OLLAMA_URL = "http://localhost:11434/api/generate"
@@ -70,72 +72,70 @@ def validate_student_data(data):
 #creating a student entry
 @app.route('/students', methods=['POST'])
 def create_student():
-    # Check if request has JSON data
     if not request.is_json:
         return {"Error": "Content-Type must be application/json"}, 400
-    
-    # Validate input data
     is_valid, message = validate_student_data(request.json)
     if not is_valid:
         return {"Error": message}, 400
-    
-    new_student = {"id":len(students)+1,"name":request.json["name"],"age":request.json["age"],"email":request.json["email"]}
-    students.append(new_student)
+    with students_lock:
+        new_student = {"id":len(students)+1,
+                       "name":request.json["name"],
+                       "age":request.json["age"],
+                       "email":request.json["email"]
+                       }
+        students.append(new_student)
     return new_student
 
 #get all students
 @app.route('/students',methods=['GET'])
 def get_students():
-    return students
+    with students_lock:
+        return list(students)
 
 #get a student by id
 @app.route('/students/<int:id_request>',methods=['GET'])
 def get_student_id(id_request):
-    for student in students:
-        if student['id']==id_request:
-            return student
-    
+    with students_lock:
+        for student in students:
+            if student['id']==id_request:
+                return student
     return {"Error": "Student id was not found"}
 
 #get student summary by id
 @app.route('/students/<int:id_request>/summary',methods=['GET'])
 def get_student_summary(id_request):
-    for student in students:
-        if student['id']==id_request:
-            summary = generate_student_summary(student)
-            return {"student_id": id_request, "summary": summary}
-    
+    with students_lock:
+        for student in students:
+            if student['id']==id_request:
+                summary = generate_student_summary(student)
+                return {"student_id": id_request, "summary": summary}
     return {"Error": "Student id was not found"}
 
 #update a student by id
 @app.route('/students/<int:id_request>',methods=['PUT'])
 def update_student(id_request):
-    # Check if request has JSON data
     if not request.is_json:
         return {"Error": "Content-Type must be application/json"}, 400
-    
-    # Validate input data
     is_valid, message = validate_student_data(request.json)
     if not is_valid:
         return {"Error": message}, 400
-    
-    for student in students:
-        if student['id']==id_request:
-            student['name']=request.json["name"]
-            student['age']=request.json["age"]
-            student['email']=request.json["email"]
-            return student
-        
+    with students_lock:
+        for student in students:
+            if student['id']==id_request:
+                student['name']=request.json["name"]
+                student['age']=request.json["age"]
+                student['email']=request.json["email"]
+                return student
     return {"Error": "Student id was not found"}
 
 #delete a student 
 @app.route('/students/<int:id_request>',methods=['DELETE'])
 def delete_student(id_request):
-    for student in students:
-        if student['id']==id_request:
-            students.remove(student)
-            return ("Student was deleted successfully")
-        
+    with students_lock:
+        for student in students:
+            if student['id']==id_request:
+                students.remove(student)
+                return ("Student was deleted successfully")
     return {"Error": "Student id was not found"}
 
 ''' 
