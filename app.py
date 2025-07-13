@@ -1,6 +1,7 @@
 from flask import Flask , request , jsonify
 import requests
 import threading
+from flask import render_template
 
 app = Flask(__name__)
 
@@ -137,6 +138,10 @@ def delete_student(id_request):
                 students.remove(student)
                 return ("Student was deleted successfully")
     return {"Error": "Student id was not found"}
+
+@app.route('/')
+def home():
+    return render_template('index.html')
 
 
 if __name__ == '__main__':

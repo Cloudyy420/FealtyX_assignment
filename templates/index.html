@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student CRUD API - Fealtyx</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #181c24;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            background: #232a36;
+            margin-top: 60px;
+            padding: 32px 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 {
+            color: #e2e8f0;
+            margin-bottom: 8px;
+        }
+        p {
+            color: #b5bdca;
+            margin-bottom: 24px;
+        }
+        .endpoints {
+            text-align: left;
+            margin: 0 auto 24px auto;
+            max-width: 400px;
+        }
+        .endpoints code {
+            background: #232a36;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #7dd3fc;
+        }
+        .endpoints strong {
+            color: #fbbf24;
+        }
+        .footer {
+            margin-top: 40px;
+            color: #6b7280;
+            font-size: 0.95em;
+        }
+        a {
+            color: #38bdf8;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        ul {
+            color: #b5bdca;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Student CRUD API</h1>
+        <p>A simple Flask-based API for managing students, featuring AI-powered summaries with Ollama.</p>
+        <div class="endpoints">
+            <strong>API Endpoints:</strong>
+            <ul>
+                <li><code>GET /students</code> – List all students</li>
+                <li><code>POST /students</code> – Add a new student</li>
+                <li><code>GET /students/&lt;id&gt;</code> – Get a student by ID</li>
+                <li><code>PUT /students/&lt;id&gt;</code> – Update a student by ID</li>
+                <li><code>DELETE /students/&lt;id&gt;</code> – Delete a student by ID</li>
+                <li><code>GET /students/&lt;id&gt;/summary</code> – Get AI summary for a student</li>
+            </ul>
+        </div>
+        <p>For API usage, use tools like <a href="https://www.postman.com/" target="_blank">Postman</a> or <code>curl</code>.<br>
+        <br>
+        <strong>Backend:</strong> Flask + Python<br>
+        <strong>AI Summaries:</strong> Ollama (llama3.1:latest)
+        </p>
+    </div>
+    <div class="footer">
+    </div>
+</body>
+</html>
