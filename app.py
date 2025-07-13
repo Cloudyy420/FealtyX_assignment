@@ -138,10 +138,6 @@ def delete_student(id_request):
                 return ("Student was deleted successfully")
     return {"Error": "Student id was not found"}
 
-''' 
-Basic CRUD is complete with Ollama integration.
-TODO: concurrency.
-'''
 
 if __name__ == '__main__':
     app.run(debug=True)
